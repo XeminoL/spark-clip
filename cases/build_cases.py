@@ -25,9 +25,6 @@ NOMINAL_HEAT = 60.0
 REFERENCE_BATTERY = Battery(12.8, 0.015)
 REFERENCE_START_DEG = 100.0
 FIRING = Firing(first_compression=4, heat_release=150.0)
-WAVE_BEFORE = 40
-WAVE_AFTER = 150
-WAVE_POINTS = 360
 WORKERS = 6
 
 
@@ -83,24 +80,6 @@ def truth_of(capture, catalog_bike):
     }
 
 
-def wave_slice(window, record):
-    trigger = record.start_time - window.start
-    first = max(0, trigger - WAVE_BEFORE)
-    last = min(window.samples.size, trigger + record.peak_offset + WAVE_AFTER)
-    step = max(1, (last - first) // WAVE_POINTS)
-    values = window.samples[first:last:step].astype(int).tolist()
-    return {"first": int(first - trigger), "step": int(step), "values": values, "ladder": record.ladder, "peak": record.peak_height, "peak_offset": record.peak_offset}
-
-
-def pick_waves(capture, records):
-    sparks = capture.record.sparks
-    pairs = [i for i in range(1, len(records)) if sparks[i].compression and not sparks[i - 1].compression]
-    if not pairs:
-        return None
-    index = pairs[min(2, len(pairs) - 1)]
-    return {"compression": wave_slice(capture.windows[index], records[index]), "exhaust": wave_slice(capture.windows[index - 1], records[index - 1]), "index": index}
-
-
 def record_bytes(records):
     payload = bytearray()
     for record in records:
@@ -118,7 +97,7 @@ def build_one(item):
     capture = build_capture(scenario, bikes)
     records = run_capture(capture.calibration, capture.windows)
     (BUILD / f"{name}.hex").write_text(record_bytes(records), encoding="ascii")
-    meta = {"labels": labels, "truth": truth_of(capture, bikes[scenario.bike]), "waves": pick_waves(capture, records), "clip_gain": capture.clip_gain}
+    meta = {"labels": labels, "truth": truth_of(capture, bikes[scenario.bike])}
     (BUILD / f"{name}.meta").write_text(json.dumps(meta), encoding="utf-8")
     return name
 

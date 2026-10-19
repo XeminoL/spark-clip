@@ -11,7 +11,7 @@ The plug fires every revolution, once at compression and once at exhaust. Breakd
 - `rtl/`: spark capture at 100 MSa/s (peak, breakdown, burn time, level-crossing times), async FIFO, UART
 - `model/`: bit-exact Python model of the capture
 - `host/`: C++ fit of both readings, error propagation, verdict or refusal
-- `web/`: set what is really wrong, see what the clip says
+- `web/`: pick a fault, see what the clip says
 
 | LUT | FF | BRAM | clock |
 |---|---|---|---|
