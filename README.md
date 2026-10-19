@@ -1,3 +1,6 @@
+> [!NOTE]
+> **Status:** This project is inactive and no longer updated.
+
 ![](web/screenshot.png)
 
 A motorbike cranks but will not start. Flat battery, weak spark or worn rings? Clip onto the plug lead and press the starter for two seconds.
