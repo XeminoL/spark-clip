@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+build/
+host/spark_clip
+host/host_test
+*.log
+*.jou
+.Xil/

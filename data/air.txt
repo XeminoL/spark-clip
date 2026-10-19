@@ -1,0 +1,3 @@
+ionisation_over_k = 1.33604964
+field_constant = 282.195909
+tip_radius_mm = 1
